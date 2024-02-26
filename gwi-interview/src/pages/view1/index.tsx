@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import router, { useRouter } from "next/router";
+import ReactModal from "react-modal";
 
 type catData = {
   id: "string";
@@ -13,8 +14,18 @@ type catData = {
   // favourite: boolean;
 };
 
+// const router = useRouter()
+// const id = useMemo(() => urlParamAsString(router.query.id), [router.query.id])
+
+// export const urlParamAsString = (input?: string | string[]) => {
+//   if (Array.isArray(input)) return input[0]
+//   return input
+// }
+
 const View1Page = () => {
   const [catPosts, setCatPosts] = useState<catData[]>([]);
+  const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
+    useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,6 +40,13 @@ const View1Page = () => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(!!router.query.catId);
+    setIsCatDetailModalOpen(!!router.query.catId);
+  }, [router, setIsCatDetailModalOpen]);
+
+  console.log(router);
 
   //   router.push({
   //     pathname: '/signup',
@@ -59,6 +77,16 @@ const View1Page = () => {
           />
         </div>
       ))}
+      <ReactModal
+        isOpen={isCatDetailModalOpen}
+        onAfterClose={() =>
+          router.push({
+            query: {
+              catId: "", // update the query param
+            },
+          })
+        }
+      ></ReactModal>
     </div>
   );
 };
