@@ -64,7 +64,6 @@ const View1Page = () => {
 
   useEffect(() => {
     const { catId } = uRouter.query;
-    console.log("help");
     console.log(!!router.query.catId);
     console.log(catId);
     console.log(uRouter);
@@ -94,7 +93,7 @@ const View1Page = () => {
         //     })
         //   }
         // >
-        <Link href={`/${catPost.id}`}>
+        <Link href={`?catId=${catPost.id}`}>
           <Image
             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
             src={catPost.url}
@@ -106,8 +105,7 @@ const View1Page = () => {
         // </div>
       ))}
       <ReactModal
-        // isOpen={isCatDetailModalOpen}
-        isOpen={true}
+        isOpen={isCatDetailModalOpen}
         onAfterClose={() =>
           router.push({
             query: {
