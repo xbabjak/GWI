@@ -3,21 +3,13 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import router, { useRouter } from "next/router";
-import ReactModal from "react-modal";
 
 import "../styles/globals.css";
+import { CatData } from "@/types/CatData";
+import { CatDetailModal } from "@/components/CatDetailModal";
 
 const api_key =
   "live_Dwpo3nJNqmH8xQWMVomZRCemxu9Qv2P8OClaBwfjB89nOfhHczGEGyFoCTlTbVWK";
-
-type catData = {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
-  // breed: []
-  // favourite: boolean;
-};
 
 // const router = useRouter()
 // const id = useMemo(() => urlParamAsString(router.query.id), [router.query.id])
@@ -28,10 +20,7 @@ type catData = {
 // }
 
 const View1Page = () => {
-  const [catPosts, setCatPosts] = useState<catData[]>([]);
-  const [catDetail, setCatDetail] = useState<catData>();
-  const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
-    useState<boolean>(false);
+  const [catPosts, setCatPosts] = useState<CatData[]>([]);
 
   const uRouter = useRouter();
 
@@ -49,44 +38,12 @@ const View1Page = () => {
     fetchCatsData();
   }, []);
 
-  useEffect(() => {
-    const { catId } = uRouter.query;
-    setCatDetail(undefined);
-
-    async function fetchCatDetailData() {
-      try {
-        const res = await axios.get(
-          `https://api.thecatapi.com/v1/images/${catId}`
-        );
-        setCatDetail(res.data);
-      } catch (err) {
-        setCatDetail({
-          id: "error",
-          url: "",
-          width: 0,
-          height: 0,
-        });
-        console.error(err);
-      }
-    }
-    fetchCatDetailData();
-  }, [uRouter, uRouter.isReady]);
-
-  useEffect(() => {
-    const { catId } = uRouter.query;
-    console.log("help");
-    console.log(!!router.query.catId);
-    console.log(catId);
-    console.log(uRouter);
-    setIsCatDetailModalOpen(!!catId);
-  }, [router, uRouter, uRouter.isReady, setIsCatDetailModalOpen]);
-
   return (
     <div>
       {catPosts.map((catPost) => (
         <Link href={`?catId=${catPost.id}`}>
           <Image
-            className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+            className="relative "
             src={catPost.url}
             alt={catPost.url}
             width={350}
@@ -94,52 +51,18 @@ const View1Page = () => {
           />
         </Link>
       ))}
-      <ReactModal
-        isOpen={isCatDetailModalOpen}
-        onAfterClose={() =>
-          router.push({
+      <CatDetailModal />
+      <button
+        onClick={() =>
+          router.replace({
             query: {
-              catId: "", // update the query param
+              catId: "", // delete the query param
             },
           })
         }
       >
-        <button
-          onClick={() =>
-            router.replace({
-              query: {
-                catId: "", // update the query param
-              },
-            })
-          }
-        >
-          Test Exit
-        </button>
-        {!catDetail ? (
-          <p>Loading ...</p>
-        ) : catDetail.id === "error" ? (
-          <p className="red"> Failed to load cat details.</p>
-        ) : (
-          <div
-            key={catDetail?.id}
-            onClick={() =>
-              router.push({
-                query: {
-                  catId: catDetail?.id, // update the query param
-                },
-              })
-            }
-          >
-            <Image
-              className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-              src={catDetail?.url || ""}
-              alt="Cat detail picture"
-              width={350}
-              height={350}
-            />
-          </div>
-        )}
-      </ReactModal>
+        Load more cats
+      </button>
     </div>
   );
 };

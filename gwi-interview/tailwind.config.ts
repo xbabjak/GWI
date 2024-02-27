@@ -18,8 +18,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-
-module.exports = {
-  darkMode: ["variant", "&:not(.light *)"],
-  // ...
-};
