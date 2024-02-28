@@ -14,9 +14,9 @@ export const CatDetailModal = () => {
   const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
     useState<boolean>(false);
 
-  const catBreed = catDetail?.breeds;
-  const isCatBreedSent = catBreed?.length && catBreed.length > 0;
-  const catBreedId = isCatBreedSent ? catBreed[0].id : "";
+  const catBreeds = catDetail?.breeds;
+  const isCatBreedSent = catBreeds?.length && catBreeds.length > 0;
+  // const catBreedIds = catBreeds?.map((breed) => breed.id).join(", ");
 
   useEffect(() => {
     const { catId } = router.query;
@@ -78,26 +78,33 @@ export const CatDetailModal = () => {
             })
           }
         >
-          {/* Image duplicity - possible solution - make Image being sent as children */}
-          {isCatBreedSent ? (
-            <Link href={`/breeds/${catBreedId}`}>
-              <Image
-                className="relative "
-                src={catDetail?.url || ""}
-                alt="Cat detail picture"
-                width={350}
-                height={350}
-              />
-            </Link>
-          ) : (
-            <Image
-              className="relative "
-              src={catDetail?.url || ""}
-              alt="Cat detail picture"
-              width={350}
-              height={350}
-            />
+          <Image
+            className="relative "
+            src={catDetail?.url || ""}
+            alt="Cat detail picture"
+            width={350}
+            height={350}
+          />
+          {isCatBreedSent && (
+            <div>
+              <h3> This cat is a part of breed </h3>
+
+              <ul>
+                {catDetail.breeds.map((breed) => (
+                  <li key={breed.id}>
+                    <strong> {breed.name} </strong>
+                    <p>{breed.description}</p>
+
+                    <Link href={`/breeds/${breed}`}>
+                      More cats from {breed.name} breed
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
+          {/* add star filled/empty to describe wheter the cat is favoured already - if the info is in the API */}
+          <form className="yellow"> Favourite </form>
         </div>
       )}
     </ReactModal>
