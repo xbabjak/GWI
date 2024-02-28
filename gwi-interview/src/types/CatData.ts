@@ -3,6 +3,6 @@ export type CatData = {
   url: string;
   width: number;
   height: number;
-  // breed: []
+  breeds: { id: string; name: string; description: string }[];
   // favourite: boolean;
 };

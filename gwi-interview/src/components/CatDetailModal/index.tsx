@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { CatData } from "@/types/CatData";
+import Link from "next/link";
+import { ERROR_CAT_DETAIL } from "./constants";
 
 export const CatDetailModal = () => {
   const router = useRouter();
@@ -11,6 +13,10 @@ export const CatDetailModal = () => {
   const [catDetail, setCatDetail] = useState<CatData>();
   const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
     useState<boolean>(false);
+
+  const catBreed = catDetail?.breeds;
+  const isCatBreedSent = catBreed?.length && catBreed.length > 0;
+  const catBreedId = isCatBreedSent ? catBreed[0].id : "";
 
   useEffect(() => {
     const { catId } = router.query;
@@ -28,13 +34,7 @@ export const CatDetailModal = () => {
         );
         setCatDetail(res.data);
       } catch (err) {
-        // to communicate to component if the fetch has failed
-        setCatDetail({
-          id: "error",
-          url: "",
-          width: 0,
-          height: 0,
-        });
+        setCatDetail(ERROR_CAT_DETAIL);
         console.error(err);
       }
     }
@@ -78,13 +78,26 @@ export const CatDetailModal = () => {
             })
           }
         >
-          <Image
-            className="relative "
-            src={catDetail?.url || ""}
-            alt="Cat detail picture"
-            width={350}
-            height={350}
-          />
+          {/* Image duplicity - possible solution - make Image being sent as children */}
+          {isCatBreedSent ? (
+            <Link href={`/breeds/${catBreedId}`}>
+              <Image
+                className="relative "
+                src={catDetail?.url || ""}
+                alt="Cat detail picture"
+                width={350}
+                height={350}
+              />
+            </Link>
+          ) : (
+            <Image
+              className="relative "
+              src={catDetail?.url || ""}
+              alt="Cat detail picture"
+              width={350}
+              height={350}
+            />
+          )}
         </div>
       )}
     </ReactModal>
