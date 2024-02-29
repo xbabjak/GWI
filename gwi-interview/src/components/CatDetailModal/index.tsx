@@ -6,13 +6,25 @@ import axios from "axios";
 import { CatData } from "@/types/CatData";
 import Link from "next/link";
 import { ERROR_CAT_DETAIL } from "./constants";
+import { api_key } from "@/keys";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+enum FavoriteUpdateStatus {
+  loading,
+  success,
+  error,
+}
 
 export const CatDetailModal = () => {
   const router = useRouter();
 
+  const { handleSubmit } = useForm<{}>();
+
   const [catDetail, setCatDetail] = useState<CatData>();
   const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
     useState<boolean>(false);
+  const [favoriteUpdateStatus, setFavoriteUpdateStatus] =
+    useState<FavoriteUpdateStatus>(FavoriteUpdateStatus.success);
 
   const catBreeds = catDetail?.breeds;
   const isCatBreedSent = catBreeds?.length && catBreeds.length > 0;
@@ -41,8 +53,34 @@ export const CatDetailModal = () => {
     fetchCatDetailData();
   }, [router, router.isReady]);
 
+  const onSubmit: SubmitHandler<{}> = () => {
+    const { catId } = router.query;
+    axios
+      .post(
+        `https://api.thecatapi.com/v1/favourites`,
+        {
+          image_id: catId,
+          // change to random hash or a login
+          sub_id: "user1",
+        },
+        {
+          headers: {
+            "x-api-key": api_key,
+          },
+        }
+      )
+      .then(() => {
+        setFavoriteUpdateStatus(FavoriteUpdateStatus.success);
+      })
+      .catch((err) => {
+        setFavoriteUpdateStatus(FavoriteUpdateStatus.error);
+        console.error(err);
+      });
+  };
+
   return (
     <ReactModal
+      ariaHideApp={false}
       isOpen={isCatDetailModalOpen}
       // onAfterClose={() =>
       //   router.push({
@@ -104,7 +142,13 @@ export const CatDetailModal = () => {
             </div>
           )}
           {/* add star filled/empty to describe wheter the cat is favoured already - if the info is in the API */}
-          <form className="yellow"> Favourite </form>
+          {/* <form className="yellow"> Favourite </form> */}
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <button>
+              <input type="submit" />
+            </button>
+          </form>
         </div>
       )}
     </ReactModal>

@@ -6,9 +6,7 @@ import Link from "next/link";
 import "../styles/globals.css";
 import { CatData } from "@/types/CatData";
 import { CatDetailModal } from "@/components/CatDetailModal";
-
-const api_key =
-  "live_Dwpo3nJNqmH8xQWMVomZRCemxu9Qv2P8OClaBwfjB89nOfhHczGEGyFoCTlTbVWK";
+import { api_key } from "@/keys";
 
 // const router = useRouter()
 // const id = useMemo(() => urlParamAsString(router.query.id), [router.query.id])
