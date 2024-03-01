@@ -9,7 +9,7 @@ import { ERROR_CAT_DETAIL } from "./constants";
 import { api_key } from "@/keys";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-enum FavoriteUpdateStatus {
+enum FavouriteUpdateStatus {
   uncalled,
   loading,
   success,
@@ -24,8 +24,8 @@ export const CatDetailModal = () => {
   const [catDetail, setCatDetail] = useState<CatData>();
   const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
     useState<boolean>(false);
-  const [favoriteUpdateStatus, setFavoriteUpdateStatus] =
-    useState<FavoriteUpdateStatus>(FavoriteUpdateStatus.uncalled);
+  const [favouriteUpdateStatus, setFavouriteUpdateStatus] =
+    useState<FavouriteUpdateStatus>(FavouriteUpdateStatus.uncalled);
 
   const catBreeds = catDetail?.breeds;
   const isCatBreedSent = catBreeds?.length && catBreeds.length > 0;
@@ -72,12 +72,12 @@ export const CatDetailModal = () => {
         }
       )
       .then((success) => {
-        setFavoriteUpdateStatus(FavoriteUpdateStatus.success);
+        setFavouriteUpdateStatus(FavouriteUpdateStatus.success);
         // remove success
         console.log("success", success);
       })
       .catch((err) => {
-        setFavoriteUpdateStatus(FavoriteUpdateStatus.error);
+        setFavouriteUpdateStatus(FavouriteUpdateStatus.error);
         console.error(err);
       });
   };
@@ -96,7 +96,7 @@ export const CatDetailModal = () => {
     >
       <button
         onClick={() => {
-          setFavoriteUpdateStatus(FavoriteUpdateStatus.uncalled);
+          setFavouriteUpdateStatus(FavouriteUpdateStatus.uncalled);
           router.replace({
             query: {
               catId: "", // delete the query param
@@ -138,7 +138,10 @@ export const CatDetailModal = () => {
                     <strong> {breed.name} </strong>
                     <p>{breed.description}</p>
 
-                    <Link href={`/breeds/${breed}`}>
+                    <Link
+                      className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                      href={`/breeds/${breed}`}
+                    >
                       More cats from {breed.name} breed
                     </Link>
                   </li>
@@ -146,9 +149,9 @@ export const CatDetailModal = () => {
               </ul>
             </div>
           )}
-          {/* use favorite  */}
+          {/* use favourite api to determine if cat is already marked as favourite  */}
           {/* add star filled/empty to describe wheter the cat is favoured already - if the info is in the API */}
-          {favoriteUpdateStatus === FavoriteUpdateStatus.success ? (
+          {favouriteUpdateStatus === FavouriteUpdateStatus.success ? (
             <svg
               className="w-5 h-5 text-yellow-300 me-1"
               aria-hidden="true"
@@ -175,11 +178,11 @@ export const CatDetailModal = () => {
               <input
                 type="submit"
                 placeholder="Favourite"
-                // disabled={favoriteUpdateStatus === FavoriteUpdateStatus.success}
+                // disabled={favouriteUpdateStatus === FavouriteUpdateStatus.success}
               />
             </button>
             {/* fill in reason for api fail */}
-            {favoriteUpdateStatus === FavoriteUpdateStatus.error && (
+            {favouriteUpdateStatus === FavouriteUpdateStatus.error && (
               <p className="text-red-700">Failed to favourite because of {}</p>
             )}
           </form>
