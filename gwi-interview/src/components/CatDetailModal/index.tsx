@@ -111,16 +111,7 @@ export const CatDetailModal = () => {
       ) : catDetail.id === "error" ? (
         <p className="red"> Failed to load cat details.</p>
       ) : (
-        <div
-          key={catDetail?.id}
-          onClick={() =>
-            router.push({
-              query: {
-                catId: catDetail?.id, // update the query param
-              },
-            })
-          }
-        >
+        <div>
           <Image
             className="relative "
             src={catDetail?.url || ""}
@@ -140,7 +131,7 @@ export const CatDetailModal = () => {
 
                     <Link
                       className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                      href={`/breeds/${breed}`}
+                      href={`/breeds?id=${breed.id}`}
                     >
                       More cats from {breed.name} breed
                     </Link>

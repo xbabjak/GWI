@@ -51,11 +51,20 @@ const View1Page = () => {
 
   return (
     <div>
-      {catPosts.map((catPost) => (
-        <Link href={`?catId=${catPost.id}`}>
-          <Image src={catPost.url} alt={catPost.url} width={350} height={350} />
-        </Link>
-      ))}
+      {/* add a navbar for all 3 pages - home, breeds, favourites */}
+      <div className="grid grid-cols-4 ">
+        {/* set same image height and keep height:width ratio */}
+        {catPosts.map((catPost) => (
+          <Link href={`?catId=${catPost.id}`}>
+            <Image
+              src={catPost.url}
+              alt={catPost.url}
+              width={350}
+              height={350}
+            />
+          </Link>
+        ))}
+      </div>
       <CatDetailModal />
       <button className="h-20 bg-blue-950" onClick={loadMoreCats}>
         Load more cats
