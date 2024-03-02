@@ -1,38 +1,13 @@
 // find a way how to import styles globaly
 import "../../styles/globals.css";
 
-import { api_key } from "@/keys";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { CatBreedModal } from "@/components/CatBreedModal";
-import { Breed } from "./types";
-import { CAT_API_BASE_URL } from "@/constants";
+import { useBredsPage } from "./hooks/useBreedsPage";
 
 const BreedsPage: React.FC = () => {
-  const [breeds, setBreeds] = useState<Breed[]>([]);
-
-  useEffect(() => {
-    const fetchBreeds = async () => {
-      const url = `${CAT_API_BASE_URL}/breeds`;
-
-      try {
-        const response = await fetch(url, {
-          headers: {
-            "x-api-key": api_key,
-          },
-        });
-        const data: Breed[] = await response.json();
-        const filteredBreeds = data.filter(
-          (breed) => breed.image?.url !== null
-        );
-        setBreeds(filteredBreeds);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
-    fetchBreeds();
-  }, []);
+  const { breeds } = useBredsPage();
 
   return (
     <div className="m-2">
