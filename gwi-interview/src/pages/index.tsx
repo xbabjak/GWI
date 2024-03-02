@@ -63,10 +63,13 @@ const View1Page = () => {
   return (
     <div>
       {/* add a navbar for all 3 pages - home, breeds, favourites */}
-      <div className="grid grid-cols-4 ">
-        {/* set same image height and keep height:width ratio */}
+      <div className="flex flex-wrap justify-between ">
         {catPosts.map((catPost) => (
-          <Link href={`?catId=${catPost.id}`}>
+          <Link
+            key={catPost.id}
+            href={`?catId=${catPost.id}`}
+            className="col col-lg"
+          >
             <Image
               src={catPost.url}
               alt={catPost.url}

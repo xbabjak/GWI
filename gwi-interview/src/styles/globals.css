@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.maincontent {
-  padding-top: 0%;
-  padding-left: 0%;
-}
-
-.col {
-  padding: 1%;
-}
 .col-lg {
   height: 200px;
   overflow: hidden;
@@ -29,9 +21,4 @@
   margin: auto;
   min-height: 100%;
   min-width: 100%;
-}
-.imgrid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
 }

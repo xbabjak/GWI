@@ -52,23 +52,30 @@ const FavouritesPage = () => {
 
   return (
     <div>
-      {favouriteCats.map((cat) => (
-        <div key={cat.image.id}>
-          <Image
-            src={cat.image.url}
-            alt={cat.image.url}
-            height={350}
-            width={350}
-          />
-          {/* toto by mal byt form */}
-          <button
-            // className="mx-auto w-full"
-            onClick={() => unfavouriteCatImage(cat.image.id)}
-          >
-            <p className="text-red-700 ">X</p>
-          </button>
-        </div>
-      ))}
+      <div className="flex flex-wrap justify-between">
+        {favouriteCats.map((cat) => (
+          <>
+            <div key={cat.image.id} className="col col-lg">
+              <Image
+                src={cat.image.url}
+                alt={cat.image.url}
+                height={350}
+                width={350}
+              />
+            </div>
+            {/* toto by mal byt form */}
+            {/* sprav to, ze ak hovernes na obrazok, tak sa ukaze "X" */}
+            <button
+              key={cat.image.id}
+              className="pr-10"
+              // className="mx-auto w-full"
+              onClick={() => unfavouriteCatImage(cat.image.id)}
+            >
+              <p className="text-red-700 "> X </p>
+            </button>
+          </>
+        ))}
+      </div>
       {/* button to fetch more onClick */}
       <button> Load more </button>
     </div>

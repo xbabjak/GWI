@@ -28,7 +28,7 @@ export const CatBreedModal = () => {
     async function fetchCatBreedData() {
       try {
         const res = await axios.get(
-          `https://api.thecatapi.com/v1/images/search?breed_ids=${id}`,
+          `https://api.thecatapi.com/v1/images/search?breed_ids=${id}&limit=10`,
           {
             headers: {
               "x-api-key": api_key,
@@ -45,17 +45,7 @@ export const CatBreedModal = () => {
   }, [router, router.isReady]);
 
   return (
-    <ReactModal
-      ariaHideApp={false}
-      isOpen={isCatBreedModalOpen}
-      // onAfterClose={() =>
-      //   router.push({
-      //     query: {
-      //       catId: "", // delete the query param
-      //     },
-      //   })
-      // }
-    >
+    <ReactModal ariaHideApp={false} isOpen={isCatBreedModalOpen}>
       <button
         onClick={() => {
           router.replace({
@@ -67,17 +57,24 @@ export const CatBreedModal = () => {
       >
         Test Exit
       </button>
-      {catBreed?.map((breed) => (
-        <Link key={breed.id} href={`/?catId=${breed.id}`}>
-          <Image
-            className="relative "
-            src={breed.url}
-            alt="Cat breed picture"
-            width={350}
-            height={350}
-          />
-        </Link>
-      ))}
+      <div className="flex flex-wrap justify-between">
+        {catBreed?.map((breed) => (
+          <Link
+            key={breed.id}
+            href={`/?catId=${breed.id}`}
+            className="col col-lg"
+          >
+            <Image
+              src={breed.url}
+              alt="Cat breed picture"
+              width={350}
+              height={350}
+            />
+          </Link>
+        ))}
+      </div>
+      {/* to do */}
+      <button> Load more</button>
     </ReactModal>
   );
 };
