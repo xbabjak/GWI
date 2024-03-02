@@ -23,7 +23,12 @@ const View1Page = () => {
     async function fetchCatsData() {
       try {
         const res = await axios.get(
-          `https://api.thecatapi.com/v1/images/search?limit=10&api_key=${api_key}`
+          `https://api.thecatapi.com/v1/images/search?limit=10`,
+          {
+            headers: {
+              "x-api-key": api_key,
+            },
+          }
         );
         setCatPosts(res.data);
       } catch (err) {
@@ -34,10 +39,16 @@ const View1Page = () => {
   }, []);
 
   const loadMoreCats = useCallback(() => {
+    // use page =0-n attribute instead
     async function fetchFullCatsData() {
       try {
         const res = await axios.get(
-          `https://api.thecatapi.com/v1/images/search?limit=10&api_key=${api_key}`
+          `https://api.thecatapi.com/v1/images/search?limit=10`,
+          {
+            headers: {
+              "x-api-key": api_key,
+            },
+          }
         );
         //.filter((v, i, a) => a.findIndex(t => (t.card_id === v.id)) === i);
         // maybe remove duplicities
