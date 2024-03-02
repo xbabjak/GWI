@@ -20,6 +20,7 @@ export const useHome = () => {
       await axios
         .get(`${CAT_API_BASE_URL}/images/search?limit=10`, {
           headers: {
+            "content-type": "application/json",
             "x-api-key": api_key,
           },
         })
@@ -39,6 +40,7 @@ export const useHome = () => {
       await axios
         .get(`${CAT_API_BASE_URL}/images/search?limit=10`, {
           headers: {
+            "content-type": "application/json",
             "x-api-key": api_key,
           },
         })

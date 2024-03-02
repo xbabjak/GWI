@@ -53,6 +53,7 @@ export const useCatBreedModal = () => {
           `${CAT_API_BASE_URL}/favourites?image_id=${catId}&sub_id=${TEST_USER}`,
           {
             headers: {
+              "content-type": "application/json",
               "x-api-key": api_key,
             },
           }
@@ -81,6 +82,7 @@ export const useCatBreedModal = () => {
         },
         {
           headers: {
+            "content-type": "application/json",
             "x-api-key": api_key,
           },
         }

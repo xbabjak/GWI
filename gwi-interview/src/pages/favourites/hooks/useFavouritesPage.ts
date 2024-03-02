@@ -9,7 +9,7 @@ export const useFavouritesPage = () => {
 
   useEffect(() => {
     async function fetchCatsData() {
-      const res = await axios
+      await axios
         .get(
           `${CAT_API_BASE_URL}/favourites?limit=10&sub_id=${TEST_USER}&order=DESC`,
           {
@@ -30,21 +30,20 @@ export const useFavouritesPage = () => {
   }, []);
 
   const unfavouriteCatImage = useCallback(
-    (imageId: string) => {
+    (imageId: number) => {
       // use page =0-n attribute instead
       async function unfavouriteCat() {
-        // this should be a delete !!!
         await axios
-          .get(`${CAT_API_BASE_URL}/images/search?limit=10`, {
+          .delete(`https://api.thecatapi.com/v1/favourites/${imageId}`, {
             headers: {
+              "content-type": "application/json",
               "x-api-key": api_key,
             },
           })
-          .then(() =>
-            setFavouriteCats(
-              favouriteCats.filter((cat) => cat.image.id !== imageId)
-            )
-          )
+          .then(() => {
+            setFavouriteCats(favouriteCats.filter((cat) => cat.id !== imageId));
+            console.log("favouriteCats", favouriteCats);
+          })
           .catch((err) => console.error(err));
       }
       unfavouriteCat();

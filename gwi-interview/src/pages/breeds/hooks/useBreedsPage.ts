@@ -14,6 +14,7 @@ export const useBredsPage = () => {
       await axios
         .get(url, {
           headers: {
+            "content-type": "application/json",
             "x-api-key": api_key,
           },
         })

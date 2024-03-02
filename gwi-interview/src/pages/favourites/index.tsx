@@ -17,17 +17,17 @@ const FavouritesPage = () => {
                 height={cat.image.height || 350}
                 width={cat.image.width || 350}
               />
-              {/* toto by mal byt form */}
-              {/* sprav to, ze ak hovernes na obrazok, tak sa ukaze "X" */}
-              <button
-                key={cat.image.id}
-                className="pr-10"
-                // className="mx-auto w-full"
-                onClick={() => unfavouriteCatImage(cat.image.id)}
-              >
-                <p className="text-red-700 "> X </p>
-              </button>
             </div>
+            {/* toto by mal byt form */}
+            {/* sprav to, ze ak hovernes na obrazok, tak sa ukaze "X" */}
+            <button
+              key={cat.image.id}
+              className="pr-10"
+              // className="mx-auto w-full"
+              onClick={() => unfavouriteCatImage(cat.id)}
+            >
+              <p className="text-red-700 "> X </p>
+            </button>
           </>
         ))}
       </div>

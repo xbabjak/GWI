@@ -35,6 +35,7 @@ export const useCatBreedModal = () => {
       await axios
         .get(`${CAT_API_BASE_URL}/images/search?breed_ids=${id}&limit=10`, {
           headers: {
+            "content-type": "application/json",
             "x-api-key": api_key,
           },
         })
