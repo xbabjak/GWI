@@ -6,13 +6,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { CatBreedModal } from "@/components/CatBreedModal";
 import { Breed } from "./types";
+import { CAT_API_BASE_URL } from "@/constants";
 
 const BreedsPage: React.FC = () => {
   const [breeds, setBreeds] = useState<Breed[]>([]);
 
   useEffect(() => {
     const fetchBreeds = async () => {
-      const url = `https://api.thecatapi.com/v1/breeds`;
+      const url = `${CAT_API_BASE_URL}/breeds`;
 
       try {
         const response = await fetch(url, {

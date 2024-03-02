@@ -7,6 +7,7 @@ import "../styles/globals.css";
 import { CatData } from "@/types/CatData";
 import { CatDetailModal } from "@/components/CatDetailModal";
 import { api_key } from "@/keys";
+import { CAT_API_BASE_URL } from "@/constants";
 
 // const router = useRouter()
 // const id = useMemo(() => urlParamAsString(router.query.id), [router.query.id])
@@ -23,7 +24,7 @@ const View1Page = () => {
     async function fetchCatsData() {
       try {
         const res = await axios.get(
-          `https://api.thecatapi.com/v1/images/search?limit=10`,
+          `${CAT_API_BASE_URL}/images/search?limit=10`,
           {
             headers: {
               "x-api-key": api_key,
@@ -43,7 +44,7 @@ const View1Page = () => {
     async function fetchFullCatsData() {
       try {
         const res = await axios.get(
-          `https://api.thecatapi.com/v1/images/search?limit=10`,
+          `${CAT_API_BASE_URL}/images/search?limit=10`,
           {
             headers: {
               "x-api-key": api_key,

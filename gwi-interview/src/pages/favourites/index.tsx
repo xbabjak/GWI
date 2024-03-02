@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { FavouriteCatData } from "./types";
 import "../../styles/globals.css";
+import { CAT_API_BASE_URL } from "@/constants";
 
 const FavouritesPage = () => {
   const [favouriteCats, setFavouriteCats] = useState<FavouriteCatData[]>([]);
@@ -12,7 +13,7 @@ const FavouritesPage = () => {
     async function fetchCatsData() {
       try {
         const res = await axios.get(
-          `https://api.thecatapi.com/v1/favourites?limit=10&sub_id=user1&order=DESC`,
+          `${CAT_API_BASE_URL}/favourites?limit=10&sub_id=user1&order=DESC`,
           {
             headers: {
               "content-type": "application/json",
@@ -33,7 +34,7 @@ const FavouritesPage = () => {
       // use page =0-n attribute instead
       async function unfavouriteCat() {
         await axios
-          .get(`https://api.thecatapi.com/v1/images/search?limit=10`, {
+          .get(`${CAT_API_BASE_URL}/images/search?limit=10`, {
             headers: {
               "x-api-key": api_key,
             },

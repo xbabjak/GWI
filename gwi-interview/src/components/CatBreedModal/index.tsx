@@ -7,6 +7,7 @@ import { CatData } from "@/types/CatData";
 import Link from "next/link";
 import { ERROR_CAT_BREED } from "./constants";
 import { api_key } from "@/keys";
+import { CAT_API_BASE_URL } from "@/constants";
 
 export const CatBreedModal = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ export const CatBreedModal = () => {
     async function fetchCatBreedData() {
       try {
         const res = await axios.get(
-          `https://api.thecatapi.com/v1/images/search?breed_ids=${id}&limit=10`,
+          `${CAT_API_BASE_URL}/images/search?breed_ids=${id}&limit=10`,
           {
             headers: {
               "x-api-key": api_key,
@@ -64,12 +65,7 @@ export const CatBreedModal = () => {
             href={`/?catId=${breed.id}`}
             className="col col-lg"
           >
-            <Image
-              src={breed.url}
-              alt="Cat breed picture"
-              width={350}
-              height={350}
-            />
+            <Image src={breed.url} alt={breed.url} width={350} height={350} />
           </Link>
         ))}
       </div>
