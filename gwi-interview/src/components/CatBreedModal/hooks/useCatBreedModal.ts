@@ -8,9 +8,8 @@ import { API_LIMIT, ERROR_CAT_BREED } from "../constants";
 
 export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
   const router = useRouter();
-  console.log("breedId", breedId);
 
-  const [catBreed, setCatBreed] = useState<CatData[]>();
+  const [catBreed, setCatBreed] = useState<CatData[]>([]);
   const [isCatBreedModalOpen, setIsCatBreedModalOpen] =
     useState<boolean>(false);
 
@@ -25,7 +24,7 @@ export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
   };
 
   const closeModal = useCallback(() => {
-    setCatBreed(undefined);
+    setCatBreed([]);
     setIsDisabledLoadMoreButton(false);
     setPageNumber(0);
 
@@ -62,7 +61,9 @@ export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
           if (res.data.length < API_LIMIT) {
             setIsDisabledLoadMoreButton(true);
           }
-          setCatBreed((cats) => (cats ? [...cats, ...res.data] : res.data));
+          // remove duplicates
+          // maybe ...cats not even needed
+          setCatBreed((cats) => [...cats, ...res.data]);
         })
         .catch((err) => {
           setCatBreed([ERROR_CAT_BREED]);

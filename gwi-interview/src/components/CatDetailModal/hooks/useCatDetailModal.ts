@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { ERROR_CAT_DETAIL } from "../utils/constants";
 import { FavouriteUpdateStatus } from "../utils/enums";
 
-export const useCatBreedModal = () => {
+export const useCatBreedModal = ({ catId }: { catId?: string }) => {
   const router = useRouter();
 
   const { handleSubmit } = useForm<{}>();
@@ -26,12 +26,10 @@ export const useCatBreedModal = () => {
   // const catBreedIds = catBreeds?.map((breed) => breed.id).join(", "); - use pagination instead
 
   useEffect(() => {
-    const { catId } = router.query;
     setIsCatDetailModalOpen(!!catId);
-  }, [router, router.isReady, setIsCatDetailModalOpen]);
+  }, [catId, setIsCatDetailModalOpen]);
 
   useEffect(() => {
-    const { catId } = router.query;
     setCatDetail(undefined);
 
     async function fetchCatDetailData() {
@@ -66,11 +64,9 @@ export const useCatBreedModal = () => {
         });
     }
     fetchIsFavourited();
-  }, [router, router.isReady]);
+  }, [catId, setIsFavourited, setCatDetail]);
 
   const setAsFavourite: SubmitHandler<{}> = () => {
-    const { catId } = router.query;
-
     //maybe remake into post/delete based on isFavoured
     axios
       .post(

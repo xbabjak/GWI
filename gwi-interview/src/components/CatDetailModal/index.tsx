@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FavouriteUpdateStatus } from "./utils/enums";
 import { useCatBreedModal } from "./hooks/useCatDetailModal";
 
-export const CatDetailModal = () => {
+export const CatDetailModal = ({ catId }: { catId?: string }) => {
   const {
     isCatDetailModalOpen,
     setFavouriteUpdateStatus,
@@ -14,7 +14,7 @@ export const CatDetailModal = () => {
     isFavourited,
     favouriteUpdateStatus,
     onSubmit,
-  } = useCatBreedModal();
+  } = useCatBreedModal({ catId });
 
   return (
     <ReactModal ariaHideApp={false} isOpen={isCatDetailModalOpen}>

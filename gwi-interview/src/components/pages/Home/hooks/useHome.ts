@@ -5,14 +5,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { API_LIMIT } from "../utils/constants";
 
-// const router = useRouter()
-// const id = useMemo(() => urlParamAsString(router.query.id), [router.query.id])
-
-// export const urlParamAsString = (input?: string | string[]) => {
-//   if (Array.isArray(input)) return input[0]
-//   return input
-// }
-
 export const useHome = () => {
   const [catPosts, setCatPosts] = useState<CatData[]>([]);
   const [pageNumber, setPageNumber] = useState(0);
