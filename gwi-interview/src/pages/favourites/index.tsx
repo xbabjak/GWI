@@ -4,7 +4,12 @@ import Image from "next/image";
 import { useFavouritesPage } from "./hooks/useFavouritesPage";
 
 const FavouritesPage = () => {
-  const { favouriteCats, unfavouriteCatImage } = useFavouritesPage();
+  const {
+    favouriteCats,
+    isDisabledLoadMoreButton,
+    unfavouriteCatImage,
+    setPageNumber,
+  } = useFavouritesPage();
   return (
     <div>
       <div className="flex flex-wrap justify-between">
@@ -32,7 +37,15 @@ const FavouritesPage = () => {
         ))}
       </div>
       {/* button to fetch more onClick */}
-      <button> Load more </button>
+      {/* disable when no more pages to load */}
+      <button
+        // add CSS to show button is disabled
+        disabled={isDisabledLoadMoreButton}
+        // move logic to hook
+        onClick={() => setPageNumber((num) => num + 1)}
+      >
+        Load more
+      </button>
     </div>
   );
 };

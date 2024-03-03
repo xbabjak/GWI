@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* remake into tailwind */
+/* show only 2 pics on smaller devices and only 1 on mobile */
 .col-lg {
   height: 200px;
   overflow: hidden;

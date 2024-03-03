@@ -3,15 +3,20 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { FavouriteCatData } from "../types";
 import { CAT_API_BASE_URL, TEST_USER } from "@/constants";
+import { API_LIMIT } from "../utils/constants";
 
 export const useFavouritesPage = () => {
   const [favouriteCats, setFavouriteCats] = useState<FavouriteCatData[]>([]);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [isDisabledLoadMoreButton, setIsDisabledLoadMoreButton] =
+    useState(false);
 
   useEffect(() => {
     async function fetchCatsData() {
       await axios
         .get(
-          `${CAT_API_BASE_URL}/favourites?limit=10&sub_id=${TEST_USER}&order=DESC`,
+          // &order=ASC
+          `${CAT_API_BASE_URL}/favourites?limit=${API_LIMIT}&sub_id=${TEST_USER}&page=${pageNumber}`,
           {
             headers: {
               "content-type": "application/json",
@@ -20,14 +25,17 @@ export const useFavouritesPage = () => {
           }
         )
         .then((res) => {
-          setFavouriteCats(res.data);
+          if (res.data.length < API_LIMIT) {
+            setIsDisabledLoadMoreButton(true);
+          }
+          setFavouriteCats((cats) => [...cats, ...res.data]);
         })
         .catch((err) => {
           console.log(err);
         });
     }
     fetchCatsData();
-  }, []);
+  }, [setFavouriteCats, pageNumber, setIsDisabledLoadMoreButton]);
 
   const unfavouriteCatImage = useCallback(
     (imageId: number) => {
@@ -42,7 +50,6 @@ export const useFavouritesPage = () => {
           })
           .then(() => {
             setFavouriteCats(favouriteCats.filter((cat) => cat.id !== imageId));
-            console.log("favouriteCats", favouriteCats);
           })
           .catch((err) => console.error(err));
       }
@@ -51,5 +58,10 @@ export const useFavouritesPage = () => {
     [favouriteCats, setFavouriteCats]
   );
 
-  return { favouriteCats, unfavouriteCatImage };
+  return {
+    favouriteCats,
+    isDisabledLoadMoreButton,
+    unfavouriteCatImage,
+    setPageNumber,
+  };
 };
