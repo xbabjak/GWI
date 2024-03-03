@@ -9,7 +9,7 @@ const Breeds = ({ breedId }: BreedsPropsType) => {
 
   return (
     <div className="m-2">
-      <h1>List of breeds: </h1>
+      <h1 className="text-3xl"> List of breeds: </h1>
       <div className="grid">
         {breeds.map((breed, index) => (
           <Link

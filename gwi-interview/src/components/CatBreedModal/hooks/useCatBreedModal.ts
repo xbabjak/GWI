@@ -9,6 +9,8 @@ import { API_LIMIT, ERROR_CAT_BREED } from "../constants";
 export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
   const router = useRouter();
 
+  const [breedName, setBreedName] = useState("");
+
   const [catBreed, setCatBreed] = useState<CatData[]>([]);
   const [isCatBreedModalOpen, setIsCatBreedModalOpen] =
     useState<boolean>(false);
@@ -64,6 +66,9 @@ export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
           // remove duplicates
           // maybe ...cats not even needed
           setCatBreed((cats) => [...cats, ...res.data]);
+          // setBreedName(
+          //   res?.data?.breeds.length > 0 ? res?.data?.breeds[0]?.name : ""
+          // );
         })
         .catch((err) => {
           setCatBreed([ERROR_CAT_BREED]);
@@ -73,7 +78,7 @@ export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
           setIsLoading(false);
         });
     }
-    if (isCatBreedModalOpen) {
+    if (breedId) {
       fetchCatBreedData();
     }
   }, [breedId, setCatBreed, pageNumber]);
@@ -84,6 +89,7 @@ export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
     isDisabledLoadMoreButton,
     onMorePagesClick,
     closeModal,
+    breedName,
     isLoading,
   };
 };

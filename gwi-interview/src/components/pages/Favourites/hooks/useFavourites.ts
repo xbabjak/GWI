@@ -38,7 +38,7 @@ export const useFavourites = () => {
           setFavouriteCats((cats) => [...cats, ...res.data]);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         })
         .finally(() => {
           setIsLoading(false);

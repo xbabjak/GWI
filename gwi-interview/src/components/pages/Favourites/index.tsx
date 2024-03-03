@@ -12,29 +12,24 @@ const Favourites = () => {
   } = useFavourites();
 
   return (
-    <div>
-      <div className="flex flex-wrap justify-between">
+    <div className="flex flex-col items-center">
+      <h1 className=" text-3xl"> Favourite cat images </h1>
+      <p className=" text-sm ">
+        By clicking on a cat image you remove it from favourites{" "}
+      </p>
+      <div className="flex flex-wrap justify-between w-full">
         {favouriteCats.map((cat) => (
-          <>
-            <div key={cat.image.id} className="col col-lg">
-              <Image
-                src={cat.image.url}
-                alt={cat.image.url}
-                height={cat.image.height || 350}
-                width={cat.image.width || 350}
-              />
-            </div>
+          <div key={cat.image.id} className="col col-lg">
             {/* toto by mal byt form */}
-            {/* sprav to, ze ak hovernes na obrazok, tak sa ukaze "X" */}
-            <button
-              key={cat.image.id}
-              className="pr-10"
-              // className="mx-auto w-full"
+            <Image
+              className="transition-all duration-300 rounded-lg hover:blur-sm hover:grayscale"
+              src={cat.image.url}
+              alt={cat.image.url}
+              height={cat.image.height || 350}
+              width={cat.image.width || 350}
               onClick={() => unfavouriteCatImage(cat.id)}
-            >
-              <p className="text-red-700 "> X </p>
-            </button>
-          </>
+            />
+          </div>
         ))}
       </div>
 

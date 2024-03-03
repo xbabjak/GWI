@@ -13,7 +13,8 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
 
   const { handleSubmit } = useForm<{}>();
 
-  const [isFavourited, setIsFavourited] = useState<boolean>(false);
+  const [favoritedId, setFavoritedId] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [catDetail, setCatDetail] = useState<CatData>();
   const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
@@ -23,7 +24,6 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
 
   const catBreeds = catDetail?.breeds;
   const isCatBreedSent = catBreeds?.length && catBreeds.length > 0;
-  // const catBreedIds = catBreeds?.map((breed) => breed.id).join(", "); - use pagination instead
 
   useEffect(() => {
     setIsCatDetailModalOpen(!!catId);
@@ -43,7 +43,9 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
           console.error(err);
         });
     }
-    fetchCatDetailData();
+    if (catId) {
+      fetchCatDetailData();
+    }
 
     async function fetchIsFavourited() {
       await axios
@@ -57,18 +59,20 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
           }
         )
         .then((res) => {
-          setIsFavourited(res.data.length > 0);
+          setFavoritedId(res.data.length > 0 ? res.data[0].id : 0);
         })
         .catch((err) => {
           console.error(err);
         });
     }
-    fetchIsFavourited();
-  }, [catId, setIsFavourited, setCatDetail]);
+    if (catId) {
+      fetchIsFavourited();
+    }
+  }, [catId, setCatDetail, setFavoritedId]);
 
   const closeModal = useCallback(() => {
     setFavouriteUpdateStatus(FavouriteUpdateStatus.uncalled);
-    setIsFavourited(false);
+    setFavoritedId(0);
 
     router.replace({
       query: {
@@ -78,39 +82,60 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
   }, [setFavouriteUpdateStatus]);
 
   const setAsFavourite: SubmitHandler<{}> = () => {
-    //maybe remake into post/delete based on isFavoured
-    axios
-      .post(
-        `${CAT_API_BASE_URL}/favourites`,
-        {
-          image_id: catId,
-          // change to random hash or a login
-          sub_id: TEST_USER,
-        },
-        {
+    setIsLoading(true);
+    if (!favoritedId) {
+      axios
+        .post(
+          `${CAT_API_BASE_URL}/favourites`,
+          {
+            image_id: catId,
+            // change to random hash or a login
+            sub_id: TEST_USER,
+          },
+          {
+            headers: {
+              "content-type": "application/json",
+              "x-api-key": api_key,
+            },
+          }
+        )
+        .then((res) => {
+          setFavouriteUpdateStatus(FavouriteUpdateStatus.success);
+          setFavoritedId(res.data.id);
+        })
+        .catch((err) => {
+          setFavouriteUpdateStatus(FavouriteUpdateStatus.error);
+          console.error(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      axios
+        .delete(`https://api.thecatapi.com/v1/favourites/${favoritedId}`, {
           headers: {
             "content-type": "application/json",
             "x-api-key": api_key,
           },
-        }
-      )
-      .then(() => {
-        setFavouriteUpdateStatus(FavouriteUpdateStatus.success);
-        setIsFavourited(true);
-      })
-      .catch((err) => {
-        setFavouriteUpdateStatus(FavouriteUpdateStatus.error);
-        console.error(err);
-      });
+        })
+        .then(() => {
+          setFavoritedId(0);
+        })
+        .catch((err) => console.error(err))
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   const onSubmit = handleSubmit(setAsFavourite);
 
   return {
+    isLoading,
     isCatDetailModalOpen,
     catDetail,
     isCatBreedSent,
-    isFavourited,
+    favoritedId,
     favouriteUpdateStatus,
     onSubmit,
     closeModal,

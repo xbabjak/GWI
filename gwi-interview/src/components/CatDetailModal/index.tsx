@@ -4,13 +4,15 @@ import Link from "next/link";
 import { FavouriteUpdateStatus } from "./utils/enums";
 import { useCatBreedModal } from "./hooks/useCatDetailModal";
 import { Star } from "../Star";
+import { Spinner } from "../Spinner";
 
 export const CatDetailModal = ({ catId }: { catId?: string }) => {
   const {
+    isLoading,
     isCatDetailModalOpen,
     catDetail,
     isCatBreedSent,
-    isFavourited,
+    favoritedId,
     favouriteUpdateStatus,
     onSubmit,
     closeModal,
@@ -18,6 +20,8 @@ export const CatDetailModal = ({ catId }: { catId?: string }) => {
 
   return (
     <ReactModal ariaHideApp={false} isOpen={isCatDetailModalOpen}>
+      <h1 className=" text-3xl text-center"> Cat detail </h1>
+
       <div className="flex flex-col">
         <button onClick={closeModal}>Test Exit</button>
         {!catDetail ? (
@@ -34,7 +38,7 @@ export const CatDetailModal = ({ catId }: { catId?: string }) => {
                 height={catDetail.height}
               />
             </div>
-            {isCatBreedSent && (
+            {isCatBreedSent ? (
               <div>
                 <h3> This cat is a part of breed </h3>
 
@@ -54,26 +58,32 @@ export const CatDetailModal = ({ catId }: { catId?: string }) => {
                   ))}
                 </ul>
               </div>
+            ) : (
+              <p> No breed details found </p>
             )}
 
-            <form onSubmit={onSubmit} className="flex">
-              <button className="flex">
-                <Star isYellow={isFavourited} />
-                <input
-                  type="submit"
-                  placeholder="Favourite"
-                  className="mr-2"
-                  // add gray collor as feedback that the button is disabled
-                  disabled={isFavourited}
-                />
-              </button>
-              {/* fill in reason for api fail */}
-              {favouriteUpdateStatus === FavouriteUpdateStatus.error && (
-                <p className="text-red-700">
-                  Failed to favourite because of {}
-                </p>
-              )}
-            </form>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <form onSubmit={onSubmit} className="flex">
+                <button className="flex">
+                  <Star isYellow={!!favoritedId} />
+                  <input
+                    type="submit"
+                    placeholder="Favourite"
+                    className="mr-2"
+                    // add gray collor as feedback that the button is disabled
+                    disabled={!!favoritedId}
+                  />
+                </button>
+                {/* fill in reason for api fail */}
+                {favouriteUpdateStatus === FavouriteUpdateStatus.error && (
+                  <p className="text-red-700">
+                    Failed to favourite because of {}
+                  </p>
+                )}
+              </form>
+            )}
           </div>
         )}
       </div>

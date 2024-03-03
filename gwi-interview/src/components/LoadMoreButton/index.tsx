@@ -1,3 +1,4 @@
+import { Spinner } from "../Spinner";
 import { useLoadMoreButton } from "./hooks/useLoadMoreButton";
 import { LoadMoreButtonProps } from "./utils/types";
 
@@ -9,19 +10,19 @@ const LoadMoreButton = ({
   const { buttonColor } = useLoadMoreButton({ isDisabledLoadMoreButton });
 
   return (
-    <>
-      <button
-        className={`h-12 w-28 ${buttonColor} flex justify-center items-center text-white rounded`}
-        onClick={onMorePagesClick}
-        disabled={isDisabledLoadMoreButton}
-      >
-        {isLoading ? (
-          <span className="w-5 block animate-spin rounded-full border-4 border-solid loading-spinner" />
-        ) : (
-          <p> Load more </p>
-        )}
-      </button>
-    </>
+    <button
+      className={`h-20 w-32 ${buttonColor} flex justify-center items-center text-white rounded sticky bottom-5`}
+      onClick={onMorePagesClick}
+      disabled={isDisabledLoadMoreButton || isLoading}
+    >
+      {isLoading ? (
+        <Spinner />
+      ) : !isDisabledLoadMoreButton ? (
+        <p> Load more </p>
+      ) : (
+        <p className="text-white"> No more data to load </p>
+      )}
+    </button>
   );
 };
 

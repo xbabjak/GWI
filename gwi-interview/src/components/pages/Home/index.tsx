@@ -11,9 +11,10 @@ const Home = ({ catId }: { catId?: string }) => {
     useHome();
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
+      <h1 className=" text-3xl"> Random cat images </h1>
       {/* add a navbar for all 3 pages - home, breeds, favourites */}
-      <div className="flex flex-wrap justify-between ">
+      <div className="flex flex-wrap justify-between w-full">
         {catPosts.map((catPost) => (
           <Link
             key={catPost.id}

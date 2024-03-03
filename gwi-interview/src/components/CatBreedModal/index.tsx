@@ -11,12 +11,14 @@ export const CatBreedModal = ({ breedId }: { breedId?: string }) => {
     isDisabledLoadMoreButton,
     onMorePagesClick,
     closeModal,
+    breedName,
     isLoading,
   } = useCatBreedModal({ breedId });
 
   return (
     <ReactModal ariaHideApp={false} isOpen={isCatBreedModalOpen}>
       <button onClick={closeModal}> Close modal </button>
+      <h1 className="text-3xl"> Images of {breedName} breed </h1>
 
       <div className="flex flex-wrap justify-between">
         {catBreed?.map((breed) => (
