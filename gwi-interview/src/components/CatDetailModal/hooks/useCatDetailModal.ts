@@ -3,7 +3,7 @@ import { api_key } from "@/keys";
 import { CatData } from "@/types/CatData";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ERROR_CAT_DETAIL } from "../utils/constants";
 import { FavouriteUpdateStatus } from "../utils/enums";
@@ -66,6 +66,17 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
     fetchIsFavourited();
   }, [catId, setIsFavourited, setCatDetail]);
 
+  const closeModal = useCallback(() => {
+    setFavouriteUpdateStatus(FavouriteUpdateStatus.uncalled);
+    setIsFavourited(false);
+
+    router.replace({
+      query: {
+        catId: "", // delete the query param
+      },
+    });
+  }, [setFavouriteUpdateStatus]);
+
   const setAsFavourite: SubmitHandler<{}> = () => {
     //maybe remake into post/delete based on isFavoured
     axios
@@ -97,12 +108,11 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
 
   return {
     isCatDetailModalOpen,
-    setFavouriteUpdateStatus,
-    router,
     catDetail,
     isCatBreedSent,
     isFavourited,
     favouriteUpdateStatus,
     onSubmit,
+    closeModal,
   };
 };
