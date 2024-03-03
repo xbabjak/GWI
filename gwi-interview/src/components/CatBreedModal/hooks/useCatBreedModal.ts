@@ -4,16 +4,31 @@ import { CatData } from "@/types/CatData";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { ERROR_CAT_BREED } from "../constants";
+import { API_LIMIT, ERROR_CAT_BREED } from "../constants";
 
-export const useCatBreedModal = () => {
+export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
   const router = useRouter();
+  console.log("breedId", breedId);
 
   const [catBreed, setCatBreed] = useState<CatData[]>();
   const [isCatBreedModalOpen, setIsCatBreedModalOpen] =
     useState<boolean>(false);
 
+  const [pageNumber, setPageNumber] = useState(0);
+  const [isDisabledLoadMoreButton, setIsDisabledLoadMoreButton] =
+    useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onMorePagesClick = () => {
+    setPageNumber((pageNumber) => pageNumber + 1);
+  };
+
   const closeModal = useCallback(() => {
+    setCatBreed(undefined);
+    setIsDisabledLoadMoreButton(false);
+    setPageNumber(0);
+
     router.replace({
       query: {
         id: "", // delete the query param
@@ -22,33 +37,52 @@ export const useCatBreedModal = () => {
   }, [router]);
 
   useEffect(() => {
-    const { id } = router.query;
-    setIsCatBreedModalOpen(!!id);
-  }, [router, router.isReady, setIsCatBreedModalOpen]);
+    setIsCatBreedModalOpen(!!breedId);
+  }, [breedId, setIsCatBreedModalOpen]);
 
   useEffect(() => {
-    // move breed id retrieving to page component
-    const { id } = router.query;
-    setCatBreed(undefined);
+    setIsLoading(true);
 
     async function fetchCatBreedData() {
+      // there seems to be an issue with pagination of this API
+      // the documentation for this API has been down as 'Page Not Found' error
+      // unable to find the correct documentation I have been guessing how it works
+      // https://developers.thecatapi.com/view-account/ylX4blBYT9FaoVd6OhvR?report=gpN-ReBkp
       await axios
-        .get(`${CAT_API_BASE_URL}/images/search?breed_ids=${id}&limit=10`, {
-          headers: {
-            "content-type": "application/json",
-            "x-api-key": api_key,
-          },
-        })
+        .get(
+          `${CAT_API_BASE_URL}/images/search?breed_ids=${breedId}&limit=${API_LIMIT}&page=${pageNumber}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              "x-api-key": api_key,
+            },
+          }
+        )
         .then((res) => {
-          setCatBreed(res.data);
+          if (res.data.length < API_LIMIT) {
+            setIsDisabledLoadMoreButton(true);
+          }
+          setCatBreed((cats) => (cats ? [...cats, ...res.data] : res.data));
         })
         .catch((err) => {
           setCatBreed([ERROR_CAT_BREED]);
           console.error(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
-    fetchCatBreedData();
-  }, [router, router.isReady, setCatBreed]);
+    if (isCatBreedModalOpen) {
+      fetchCatBreedData();
+    }
+  }, [breedId, setCatBreed, pageNumber]);
 
-  return { catBreed, isCatBreedModalOpen, closeModal };
+  return {
+    catBreed,
+    isCatBreedModalOpen,
+    isDisabledLoadMoreButton,
+    onMorePagesClick,
+    closeModal,
+    isLoading,
+  };
 };

@@ -2,9 +2,17 @@ import ReactModal from "react-modal";
 import Image from "next/image";
 import Link from "next/link";
 import { useCatBreedModal } from "./hooks/useCatBreedModal";
+import LoadMoreButton from "../LoadMoreButton";
 
-export const CatBreedModal = () => {
-  const { catBreed, isCatBreedModalOpen, closeModal } = useCatBreedModal();
+export const CatBreedModal = ({ breedId }: { breedId?: string }) => {
+  const {
+    catBreed,
+    isCatBreedModalOpen,
+    isDisabledLoadMoreButton,
+    onMorePagesClick,
+    closeModal,
+    isLoading,
+  } = useCatBreedModal({ breedId });
 
   return (
     <ReactModal ariaHideApp={false} isOpen={isCatBreedModalOpen}>
@@ -26,8 +34,12 @@ export const CatBreedModal = () => {
           </Link>
         ))}
       </div>
-      {/* to do */}
-      <button> Load more</button>
+
+      <LoadMoreButton
+        isLoading={isLoading}
+        onMorePagesClick={onMorePagesClick}
+        isDisabledLoadMoreButton={isDisabledLoadMoreButton}
+      />
     </ReactModal>
   );
 };

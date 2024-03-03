@@ -2,12 +2,13 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import "../styles/globals.css";
 import { CatDetailModal } from "@/components/CatDetailModal";
 import { useHome } from "./hooks/useHome";
+import LoadMoreButton from "@/components/LoadMoreButton";
 
 const HomePage = () => {
-  const { catPosts, loadMoreCats } = useHome();
+  const { catPosts, isDisabledLoadMoreButton, isLoading, onMorePagesClick } =
+    useHome();
 
   return (
     <div>
@@ -27,11 +28,14 @@ const HomePage = () => {
             />
           </Link>
         ))}
+        {/*  add 10 skeleton images when loading */}
       </div>
       <CatDetailModal />
-      <button className="h-20 bg-blue-950" onClick={loadMoreCats}>
-        Load more cats
-      </button>
+      <LoadMoreButton
+        isLoading={isLoading}
+        onMorePagesClick={onMorePagesClick}
+        isDisabledLoadMoreButton={isDisabledLoadMoreButton}
+      />
     </div>
   );
 };

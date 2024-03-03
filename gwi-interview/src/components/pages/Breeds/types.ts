@@ -7,3 +7,7 @@ export type Breed = {
   temperament: string;
   wikipedia_url: string;
 };
+
+export type BreedsPropsType = {
+  breedId?: string;
+};

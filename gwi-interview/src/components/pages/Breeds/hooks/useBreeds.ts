@@ -4,7 +4,7 @@ import { api_key } from "@/keys";
 import { useEffect, useState } from "react";
 import { Breed } from "../types";
 
-export const useBredsPage = () => {
+export const useBreds = () => {
   const [breeds, setBreeds] = useState<Breed[]>([]);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const useBredsPage = () => {
     };
 
     fetchBreeds();
-  }, []);
+  }, [setBreeds]);
 
   return { breeds };
 };

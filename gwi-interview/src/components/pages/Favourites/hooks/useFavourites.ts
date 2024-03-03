@@ -5,13 +5,20 @@ import { FavouriteCatData } from "../types";
 import { CAT_API_BASE_URL, TEST_USER } from "@/constants";
 import { API_LIMIT } from "../utils/constants";
 
-export const useFavouritesPage = () => {
+export const useFavourites = () => {
   const [favouriteCats, setFavouriteCats] = useState<FavouriteCatData[]>([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [isDisabledLoadMoreButton, setIsDisabledLoadMoreButton] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onMorePagesClick = () => {
+    setPageNumber((pageNumber) => pageNumber + 1);
+  };
 
   useEffect(() => {
+    setIsLoading(true);
+
     async function fetchCatsData() {
       await axios
         .get(
@@ -32,10 +39,14 @@ export const useFavouritesPage = () => {
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
+
     fetchCatsData();
-  }, [setFavouriteCats, pageNumber, setIsDisabledLoadMoreButton]);
+  }, [setFavouriteCats, pageNumber, setIsDisabledLoadMoreButton, setIsLoading]);
 
   const unfavouriteCatImage = useCallback(
     (imageId: number) => {
@@ -62,6 +73,7 @@ export const useFavouritesPage = () => {
     favouriteCats,
     isDisabledLoadMoreButton,
     unfavouriteCatImage,
-    setPageNumber,
+    onMorePagesClick,
+    isLoading,
   };
 };

@@ -5,3 +5,5 @@ export const ERROR_CAT_BREED = {
   height: 0,
   breeds: [],
 };
+
+export const API_LIMIT = 10;
