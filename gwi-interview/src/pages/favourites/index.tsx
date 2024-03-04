@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/Navbar";
 import Favourites from "@/components/pages/Favourites";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -12,7 +13,10 @@ const FavouritesPage = () => {
   // }
 
   return (
-    <Favourites />
+    <>
+      <Navbar />
+      <Favourites />
+    </>
     // <>
     //     <CustomHead title={'blog-detail'} />
     //     <PublicRoute>

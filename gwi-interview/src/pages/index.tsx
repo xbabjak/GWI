@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/Navbar";
 import Home from "@/components/pages/Home";
 import { urlParamAsString } from "@/utils/helpers";
 import { useRouter } from "next/router";
@@ -15,7 +16,10 @@ const HomePage = () => {
   // }
 
   return (
-    <Home catId={catId} />
+    <>
+      <Navbar />
+      <Home catId={catId} />
+    </>
     // <>
     //     <CustomHead title={'blog-detail'} />
     //     <PublicRoute>

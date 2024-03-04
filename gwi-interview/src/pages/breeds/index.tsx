@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/Navbar";
 import Breeds from "@/components/pages/Breeds";
 import { urlParamAsString } from "@/utils/helpers";
 import { useRouter } from "next/router";
@@ -15,7 +16,10 @@ const BreedsPage = () => {
   // }
 
   return (
-    <Breeds breedId={breedId} />
+    <>
+      <Navbar />
+      <Breeds breedId={breedId} />
+    </>
     // <>
     //     <CustomHead title={'blog-detail'} />
     //     <PublicRoute>
