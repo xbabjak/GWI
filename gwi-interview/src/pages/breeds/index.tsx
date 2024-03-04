@@ -1,3 +1,4 @@
+import { CustomHead } from "@/components/CustomHead";
 import { Navbar } from "@/components/Navbar";
 import Breeds from "@/components/pages/Breeds";
 import { urlParamAsString } from "@/utils/helpers";
@@ -11,21 +12,12 @@ const BreedsPage = () => {
     [router.isReady, router.query.id]
   );
 
-  // if (!id) {
-  //     return <Error404Page />
-  // }
-
   return (
     <>
+      <CustomHead title="Cat breeds" />
       <Navbar />
       <Breeds breedId={breedId} />
     </>
-    // <>
-    //     <CustomHead title={'blog-detail'} />
-    //     <PublicRoute>
-    //         <BlogDetail id={id} />
-    //     </PublicRoute>
-    // </>
   );
 };
 export default BreedsPage;

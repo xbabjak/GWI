@@ -1,3 +1,4 @@
+import { CustomHead } from "@/components/CustomHead";
 import { Navbar } from "@/components/Navbar";
 import Home from "@/components/pages/Home";
 import { urlParamAsString } from "@/utils/helpers";
@@ -11,21 +12,12 @@ const HomePage = () => {
     [router.isReady, router.query.catId]
   );
 
-  // if (!id) {
-  //     return <Error404Page />
-  // }
-
   return (
     <>
+      <CustomHead title="Random cats" />
       <Navbar />
       <Home catId={catId} />
     </>
-    // <>
-    //     <CustomHead title={'blog-detail'} />
-    //     <PublicRoute>
-    //         <BlogDetail id={id} />
-    //     </PublicRoute>
-    // </>
   );
 };
 export default HomePage;
