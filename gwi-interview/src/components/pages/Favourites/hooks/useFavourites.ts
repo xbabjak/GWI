@@ -22,7 +22,6 @@ export const useFavourites = () => {
     async function fetchCatsData() {
       await axios
         .get(
-          // &order=ASC
           `${CAT_API_BASE_URL}/favourites?limit=${API_LIMIT}&sub_id=${TEST_USER}&page=${pageNumber}`,
           {
             headers: {
@@ -50,7 +49,6 @@ export const useFavourites = () => {
 
   const unfavouriteCatImage = useCallback(
     (imageId: number) => {
-      // use page =0-n attribute instead
       async function unfavouriteCat() {
         await axios
           .delete(`https://api.thecatapi.com/v1/favourites/${imageId}`, {

@@ -1,5 +1,4 @@
 import { CustomHead } from "@/components/CustomHead";
-import { Navbar } from "@/components/Navbar";
 import Breeds from "@/components/pages/Breeds";
 import { urlParamAsString } from "@/utils/helpers";
 import { useRouter } from "next/router";
@@ -15,7 +14,6 @@ const BreedsPage = () => {
   return (
     <>
       <CustomHead title="Cat breeds" />
-      <Navbar />
       <Breeds breedId={breedId} />
     </>
   );

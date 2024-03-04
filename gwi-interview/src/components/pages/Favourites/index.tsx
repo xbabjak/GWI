@@ -15,12 +15,11 @@ const Favourites = () => {
     <div className="flex flex-col items-center">
       <h1 className=" text-3xl"> Favourite cat images </h1>
       <p className=" text-sm ">
-        By clicking on a cat image you remove it from favourites{" "}
+        By clicking on a cat image you remove it from favourites
       </p>
       <div className="flex flex-wrap justify-between w-full">
         {favouriteCats.map((cat) => (
           <div key={cat.image.id} className="col col-lg">
-            {/* toto by mal byt form */}
             <Image
               className="transition-all duration-300 rounded-lg hover:blur-sm hover:grayscale"
               src={cat.image.url}
@@ -34,8 +33,6 @@ const Favourites = () => {
       </div>
 
       <LoadMoreButton
-        // add CSS to show button is disabled
-        // move logic to hook
         onMorePagesClick={onMorePagesClick}
         isDisabledLoadMoreButton={isDisabledLoadMoreButton}
         isLoading={isLoading}

@@ -1,5 +1,4 @@
 import { CustomHead } from "@/components/CustomHead";
-import { Navbar } from "@/components/Navbar";
 import Home from "@/components/pages/Home";
 import { urlParamAsString } from "@/utils/helpers";
 import { useRouter } from "next/router";
@@ -15,7 +14,6 @@ const HomePage = () => {
   return (
     <>
       <CustomHead title="Random cats" />
-      <Navbar />
       <Home catId={catId} />
     </>
   );
