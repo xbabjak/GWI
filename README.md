@@ -5,5 +5,5 @@ GWI interview challenge
 To start
 
 ```bash
-cd gwi-interview
+cd gwi-interview/ && yarn dev
 ```
