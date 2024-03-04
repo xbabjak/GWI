@@ -4,9 +4,10 @@ import { CatData } from "@/types/CatData";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { API_LIMIT, ERROR_CAT_BREED } from "../constants";
+import { API_LIMIT, ERROR_CAT_BREED } from "../utils/constants";
+import { UseCatBreedModalPropsType } from "../utils/types";
 
-export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
+export const useCatBreedModal = ({ breedId }: UseCatBreedModalPropsType) => {
   const router = useRouter();
 
   const [catBreed, setCatBreed] = useState<CatData[]>([]);
@@ -61,8 +62,6 @@ export const useCatBreedModal = ({ breedId }: { breedId?: string }) => {
           if (res.data.length < API_LIMIT) {
             setIsDisabledLoadMoreButton(true);
           }
-          // remove duplicates
-          // maybe ...cats not even needed
           setCatBreed((cats) => [...cats, ...res.data]);
         })
         .catch((err) => {

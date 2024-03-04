@@ -1,19 +1,18 @@
 import ReactModal from "react-modal";
 import Image from "next/image";
 import Link from "next/link";
-import { FavouriteUpdateStatus } from "./utils/enums";
 import { useCatBreedModal } from "./hooks/useCatDetailModal";
 import { Star } from "../Star";
 import { Spinner } from "../Spinner";
+import { CatDetailModalPropsType } from "./utils/types";
 
-export const CatDetailModal = ({ catId }: { catId?: string }) => {
+export const CatDetailModal = ({ catId }: CatDetailModalPropsType) => {
   const {
     isLoading,
     isCatDetailModalOpen,
     catDetail,
     isCatBreedSent,
     favoritedId,
-    favouriteUpdateStatus,
     onSubmit,
     closeModal,
   } = useCatBreedModal({ catId });
@@ -25,7 +24,7 @@ export const CatDetailModal = ({ catId }: { catId?: string }) => {
       <div className="flex flex-col">
         <button onClick={closeModal}>Test Exit</button>
         {!catDetail ? (
-          <p>Loading ...</p>
+          <Spinner />
         ) : catDetail.id === "error" ? (
           <p className="red"> Failed to load cat details.</p>
         ) : (
@@ -76,12 +75,6 @@ export const CatDetailModal = ({ catId }: { catId?: string }) => {
                     disabled={!!favoritedId}
                   />
                 </button>
-                {/* fill in reason for api fail */}
-                {favouriteUpdateStatus === FavouriteUpdateStatus.error && (
-                  <p className="text-red-700">
-                    Failed to favourite because of {}
-                  </p>
-                )}
               </form>
             )}
           </div>

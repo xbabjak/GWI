@@ -6,9 +6,9 @@ export const Navbar = () => {
       <div className="container mx-auto px-4 h-full">
         <div className="flex justify-between items-center h-full">
           <div>
-            <h1 className="text-white">Cats</h1>
+            <h1 className="text-white hidden sm:block">Cats</h1>
           </div>
-          <ul className="hidden md:flex gap-x-6 text-white">
+          <ul className="flex gap-x-6 text-white">
             <li>
               <Link href="/">Home</Link>
             </li>

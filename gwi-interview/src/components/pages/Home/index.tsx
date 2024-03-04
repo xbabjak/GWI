@@ -5,15 +5,15 @@ import Link from "next/link";
 import { CatDetailModal } from "@/components/CatDetailModal";
 import { useHome } from "./hooks/useHome";
 import LoadMoreButton from "@/components/LoadMoreButton";
+import { HomePropsType } from "./utils/types";
 
-const Home = ({ catId }: { catId?: string }) => {
+const Home = ({ catId }: HomePropsType) => {
   const { catPosts, isDisabledLoadMoreButton, isLoading, onMorePagesClick } =
     useHome();
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className=" text-3xl"> Random cat images </h1>
-      {/* add a navbar for all 3 pages - home, breeds, favourites */}
+      <h1 className="text-3xl"> Random cat images </h1>
       <div className="flex flex-wrap justify-between w-full">
         {catPosts.map((catPost) => (
           <Link
@@ -29,7 +29,6 @@ const Home = ({ catId }: { catId?: string }) => {
             />
           </Link>
         ))}
-        {/*  add 10 skeleton images when loading */}
       </div>
       <CatDetailModal catId={catId} />
       <LoadMoreButton

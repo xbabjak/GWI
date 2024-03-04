@@ -6,9 +6,9 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ERROR_CAT_DETAIL } from "../utils/constants";
-import { FavouriteUpdateStatus } from "../utils/enums";
+import { UseCatDetailModalPropsType } from "../utils/types";
 
-export const useCatBreedModal = ({ catId }: { catId?: string }) => {
+export const useCatBreedModal = ({ catId }: UseCatDetailModalPropsType) => {
   const router = useRouter();
 
   const { handleSubmit } = useForm<{}>();
@@ -19,8 +19,6 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
   const [catDetail, setCatDetail] = useState<CatData>();
   const [isCatDetailModalOpen, setIsCatDetailModalOpen] =
     useState<boolean>(false);
-  const [favouriteUpdateStatus, setFavouriteUpdateStatus] =
-    useState<FavouriteUpdateStatus>(FavouriteUpdateStatus.uncalled);
 
   const catBreeds = catDetail?.breeds;
   const isCatBreedSent = catBreeds?.length && catBreeds.length > 0;
@@ -71,7 +69,6 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
   }, [catId, setCatDetail, setFavoritedId]);
 
   const closeModal = useCallback(() => {
-    setFavouriteUpdateStatus(FavouriteUpdateStatus.uncalled);
     setFavoritedId(0);
 
     router.replace({
@@ -79,7 +76,7 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
         catId: "", // delete the query param
       },
     });
-  }, [setFavouriteUpdateStatus]);
+  }, [setFavoritedId]);
 
   const setAsFavourite: SubmitHandler<{}> = () => {
     setIsLoading(true);
@@ -100,11 +97,9 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
           }
         )
         .then((res) => {
-          setFavouriteUpdateStatus(FavouriteUpdateStatus.success);
           setFavoritedId(res.data.id);
         })
         .catch((err) => {
-          setFavouriteUpdateStatus(FavouriteUpdateStatus.error);
           console.error(err);
         })
         .finally(() => {
@@ -136,7 +131,6 @@ export const useCatBreedModal = ({ catId }: { catId?: string }) => {
     catDetail,
     isCatBreedSent,
     favoritedId,
-    favouriteUpdateStatus,
     onSubmit,
     closeModal,
   };
