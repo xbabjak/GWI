@@ -1,2 +1,1 @@
-export const api_key =
-  "live_Dwpo3nJNqmH8xQWMVomZRCemxu9Qv2P8OClaBwfjB89nOfhHczGEGyFoCTlTbVWK";
+export const api_key = process.env.NEXT_PUBLIC_API_KEY;
