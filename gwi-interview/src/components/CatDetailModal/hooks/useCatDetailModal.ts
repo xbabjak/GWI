@@ -107,7 +107,7 @@ export const useCatBreedModal = ({ catId }: UseCatDetailModalPropsType) => {
         });
     } else {
       axios
-        .delete(`https://api.thecatapi.com/v1/favourites/${favoritedId}`, {
+        .delete(`${CAT_API_BASE_URL}/favourites/${favoritedId}`, {
           headers: {
             "content-type": "application/json",
             "x-api-key": api_key,
